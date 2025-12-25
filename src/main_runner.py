@@ -116,6 +116,7 @@ def run_experiment_basic(num_nodes, scenario_name, AlgoClass=TouegNode, is_spars
         sim_table = sys.nodes[check_node].D_u
         gt_table = real_paths[check_node]
         correct, total = 0, 0
+        
         for dest in nodes:
             if dest == check_node: continue
             sim_val = sim_table.get(dest, float('inf'))

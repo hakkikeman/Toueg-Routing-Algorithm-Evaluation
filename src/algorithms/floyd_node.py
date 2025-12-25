@@ -38,17 +38,19 @@ class FloydNode(Node):
             if m_type == 'START_ROUND':
                 w = msg['pivot']
                 
-                # If I am pivot, initiate flood
+                # If I am pivot, initiate flood with my distance vector
                 if self.id == w:
                     self.S_u.add(w)
+                    # Pivot broadcasts its own distance vector
                     self.broadcast_vector(w, self.D_u)
+                # If I'm NOT the pivot, I still need to be ready to receive FLOOD_DW
+                # The algorithm continues in the FLOOD_DW handler below
 
             elif m_type == 'FLOOD_DW':
                 w = msg['pivot_src']
-                D_w = msg['vector']
+                D_w = msg['vector']  # This is the SENDER's distance vector (not necessarily pivot's)
                 sender = msg['sender']
                 
-                # --- CRITICAL FIX ---
                 # Check 1: Is this the first time I hear about pivot w?
                 first_time = (w not in self.S_u)
                 
@@ -56,14 +58,17 @@ class FloydNode(Node):
                     self.S_u.add(w)
                 
                 # Check 2: Does this message improve my routing table?
-                # (Even if I heard from w before, this neighbor might offer a better path)
                 improved = self.relax(w, D_w, sender)
                 
-                # RULE: Broadcast if it's the first time OR if we found a better path.
-                # This causes the "Chatter" that makes Floyd expensive.
+                # CRITICAL FIX: After updating our table, broadcast OUR updated D_u
+                # Each node propagates its own distances, not the pivot's
+                # This is how distributed Floyd-Warshall works: flooding with updates
                 if first_time or improved:
-                    # If improved, we must share the new D_u with neighbors
+                    # Broadcast our own updated distance vector
                     self.broadcast_vector(w, self.D_u)
+
+
+
 
     def broadcast_vector(self, w, vector):
         """Broadcasts the distance vector to ALL neighbors."""
@@ -75,43 +80,38 @@ class FloydNode(Node):
                 'sender': self.id
             })
 
-    def relax(self, w, D_w, sender):
+    def relax(self, w, D_sender, sender):
         """
-        Updates local distances. 
+        Updates local distances following distributed Floyd-Warshall logic.
+        
+        IMPORTANT: D_sender is the SENDER's distance table, not the pivot's!
+        Each node broadcasts its own D_u after updating.
+        
+        Algorithm 7.4 Line 19 adapted for distributed flooding:
+        For each destination v: Du[v] = min(Du[v], dist(u, sender) + D_sender[v])
+        
         Returns True if ANY value in the table improved.
         """
         updated = False
+        
+        # Get edge weight to sender
         dist_to_sender = self.neighbors.get(sender, {}).get('weight', float('inf'))
         
-        # We also need to update the distance TO the pivot w itself via sender
-        # This is often missed. The vector D_w contains distances FROM w.
-        # But D_w[w] is 0. So logic handles it naturally below.
+        # Update distances using sender's table
+        # For each destination v in sender's table:
+        # New path: me -> sender -> v
+        # Cost: dist(me, sender) + D_sender[v]
         
-        for v, dist_w_v in D_w.items():
-            current_dist = self.D_u.get(v, float('inf'))
+        for v, dist_sender_to_v in D_sender.items():
+            current_dist_to_v = self.D_u.get(v, float('inf'))
             
-            # Path: Me -> Sender -> ... -> v
-            # Cost: (Me->Sender) + (Sender's cost to v [which comes from w's vector perspective])
-            # Wait, DistFW propagates D_w (distance from w to others).
-            # The relaxation logic in the book is: Du[v] = min(Du[v], Du[w] + Dw[v])
-            # We need to ensure we have a valid Du[w] first.
+            # New distance via sender
+            new_dist_to_v = dist_to_sender + dist_sender_to_v
             
-            dist_u_w = self.D_u.get(w, float('inf'))
-            
-            # If we don't know how to reach w, we can't use w as a pivot yet.
-            # But wait, if 'sender' sent us this, we can reach w via 'sender'.
-            # Special update for Du[w] using the sender:
-            if v == w:
-                 # The vector says dist from w to w is 0.
-                 # So cost to w via sender is dist_to_sender + 0.
-                 pass 
-
-            new_dist_via_pivot = dist_u_w + dist_w_v
-            
-            if new_dist_via_pivot < current_dist:
-                self.D_u[v] = new_dist_via_pivot
-                if w in self.P_u:
-                     self.P_u[v] = self.P_u[w]
+            # If this path is better, update
+            if new_dist_to_v < current_dist_to_v:
+                self.D_u[v] = new_dist_to_v
+                self.P_u[v] = sender  # Next hop to reach v is sender
                 updated = True
-                
+        
         return updated
