@@ -30,17 +30,3 @@ Farklı düğüm sayılarında algoritmaların davranışları:
 Simülasyonda kullanılan 10 düğümlü gerçek dünya (Real World) ağ örneği:
 
 ![Network Visualization](Network_Real_World_10_Nodes.png)
-
-## 🛠 Kurulum ve Çalıştırma
-
-Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
-
-### Gereksinimler
-Proje Python 3 üzerinde çalışır. Gerekli kütüphaneler:
-* `networkx`
-* `matplotlib`
-* `pandas`
-* `numpy`
-   ```bh
-   git clone [https://github.com/kullaniciadiniz/toueg-routing-evaluation.git](https://github.com/kullaniciadiniz/toueg-routing-evaluation.git)
-   cd toueg-routing-evaluation
