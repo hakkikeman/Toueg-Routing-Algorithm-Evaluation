@@ -60,13 +60,14 @@ def calculate_average_degree(G):
 
 # --- EXPERIMENT RUNNER FUNCTIONS ---
 
-def run_experiment_basic(num_nodes, scenario_name, is_sparse=False):
+def run_experiment_basic(num_nodes, scenario_name, AlgoClass=TouegNode, is_sparse=False):
     """
     Runs Experiment 1 & 2: Validation and Scale Testing.
     Returns: (duration, msg_count, accuracy, avg_degree)
     """
+    algo_name = "Toueg" if AlgoClass == TouegNode else "Floyd"
     print(f"\n{'#'*60}")
-    print(f"SCENARIO: {scenario_name} (Nodes: {num_nodes})")
+    print(f"SCENARIO: {scenario_name} (Nodes: {num_nodes}) - {algo_name}")
     print(f"Type: {'SPARSE' if is_sparse else 'DENSE'} Graph")
     print(f"{'#'*60}")
 
@@ -89,7 +90,7 @@ def run_experiment_basic(num_nodes, scenario_name, is_sparse=False):
         print("-> Validation Skipped (Graph might be disconnected)")
 
     # Initialize Simulation
-    sys = System(TouegNode, nxGraph=G, roundInterval=None)
+    sys = System(AlgoClass, nxGraph=G, roundInterval=None)
     inject_weights_to_nodes(sys, G)
     
     start_time = time.time()
@@ -178,8 +179,10 @@ if __name__ == "__main__":
     experiment_results = {
         "exp1_scale": {
             "nodes": [],
-            "messages": [],
-            "time": []
+            "toueg_messages": [],
+            "toueg_time": [],
+            "floyd_messages": [],
+            "floyd_time": []
         },
         "exp2_connectivity": {
             "dense_10": {},
@@ -195,19 +198,25 @@ if __name__ == "__main__":
     print("\n>>> STARTING EXPERIMENT 1: VARYING NODE COUNTS <<<")
     
     for count in [10, 20, 30, 40, 50]: 
-        dur, msgs, acc, deg = run_experiment_basic(num_nodes=count, scenario_name=f"Scale Test {count}")
+        # Run Toueg Algorithm
+        dur_t, msgs_t, acc_t, deg_t = run_experiment_basic(num_nodes=count, scenario_name=f"Scale Test {count}", AlgoClass=TouegNode)
+        
+        # Run Floyd Algorithm
+        dur_f, msgs_f, acc_f, deg_f = run_experiment_basic(num_nodes=count, scenario_name=f"Scale Test {count}", AlgoClass=FloydNode)
         
         # Store for Scale Chart
         experiment_results["exp1_scale"]["nodes"].append(count)
-        experiment_results["exp1_scale"]["messages"].append(msgs)
-        experiment_results["exp1_scale"]["time"].append(dur)
+        experiment_results["exp1_scale"]["toueg_messages"].append(msgs_t)
+        experiment_results["exp1_scale"]["toueg_time"].append(dur_t)
+        experiment_results["exp1_scale"]["floyd_messages"].append(msgs_f)
+        experiment_results["exp1_scale"]["floyd_time"].append(dur_f)
         
         # Store 10-Node Dense result for Connectivity Chart (Experiment 2 baseline)
         if count == 10:
             experiment_results["exp2_connectivity"]["dense_10"] = {
-                "Time": f"{dur:.4f}s",
-                "Messages": msgs,
-                "Accuracy": f"{acc:.1f}%"
+                "Time": f"{dur_t:.4f}s",
+                "Messages": msgs_t,
+                "Accuracy": f"{acc_t:.1f}%"
             }
 
     # --- EXPERIMENT 2: CONNECTIVITY TEST ---

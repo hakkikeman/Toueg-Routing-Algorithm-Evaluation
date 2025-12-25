@@ -238,68 +238,107 @@ def plot_comparison_chart_exp3(results):
     plt.close()
 
 def plot_scale_charts_exp1(results):
-    """Generates Scalability BAR Charts for Experiment 1."""
+    """Generates Scalability BAR Charts for Experiment 1 with Algorithm Comparison."""
     if not results:
         return
 
     data_scale = results.get('exp1_scale', {})
     nodes = data_scale.get('nodes', [])
-    messages = data_scale.get('messages', [])
-    times = data_scale.get('time', [])
+    toueg_messages = data_scale.get('toueg_messages', [])
+    toueg_times = data_scale.get('toueg_time', [])
+    floyd_messages = data_scale.get('floyd_messages', [])
+    floyd_times = data_scale.get('floyd_time', [])
 
     if not nodes:
         return
 
-    colors = ['#2E86C1', '#27AE60', '#F39C12', '#8E44AD', '#E74C3C']
+    colors = ['#2E86C1', '#E74C3C']  # Blue for Toueg, Red for Floyd
+    labels = ['Toueg (Algo 7.5)', 'Dist. Floyd (Algo 7.4)']
     x_pos = np.arange(len(nodes))
+    width = 0.35
 
     # ===============================
     # BAR CHART 1: TOTAL MESSAGES
     # ===============================
-    plt.figure(figsize=(10, 6))
-    bars = plt.bar(x_pos, messages, color=colors)
+    plt.figure(figsize=(12, 6))
+    bars1 = plt.bar(x_pos - width/2, toueg_messages, width, color=colors[0], label=labels[0])
+    bars2 = plt.bar(x_pos + width/2, floyd_messages, width, color=colors[1], label=labels[1])
 
     plt.xticks(x_pos, nodes)
-    plt.xlabel("Node Count")
-    plt.ylabel("Total Messages")
-    plt.title("Experiment 1: Message Explosion (Scale Test)", fontweight='bold')
+    plt.xlabel("Node Count", fontsize=12)
+    plt.ylabel("Total Messages", fontsize=12)
+    plt.title("Experiment 1: Message Explosion (Scale Test)", fontweight='bold', fontsize=14)
     plt.grid(axis='y', linestyle='--', alpha=0.6)
+    plt.legend(loc='upper left', fontsize=11)
 
-    for bar, val in zip(bars, messages):
+    # Add value labels on bars
+    for bar, val in zip(bars1, toueg_messages):
         plt.text(
             bar.get_x() + bar.get_width() / 2,
             bar.get_height(),
-            f"{val} Messages",
+            f"{val}",
             ha='center',
             va='bottom',
+            fontweight='bold',
+            fontsize=9
+        )
+    
+    for bar, val in zip(bars2, floyd_messages):
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height(),
+            f"{val}",
+            ha='center',
+            va='bottom',
+            fontweight='bold',
+            fontsize=9
         )
 
+    plt.tight_layout()
     plt.savefig("results/Performance_Complexity_Messages_BAR.png", dpi=300, bbox_inches='tight')
     plt.close()
 
     # ===============================
     # BAR CHART 2: EXECUTION TIME
     # ===============================
-    plt.figure(figsize=(10, 6))
-    bars = plt.bar(x_pos, times, color=colors)
+    plt.figure(figsize=(12, 6))
+    bars1 = plt.bar(x_pos - width/2, toueg_times, width, color=colors[0], label=labels[0])
+    bars2 = plt.bar(x_pos + width/2, floyd_times, width, color=colors[1], label=labels[1])
 
     plt.xticks(x_pos, nodes)
-    plt.xlabel("Node Count")
-    plt.ylabel("Time (seconds)")
-    plt.title("Experiment 1: Execution Time Analysis", fontweight='bold')
+    plt.xlabel("Node Count", fontsize=12)
+    plt.ylabel("Time (seconds)", fontsize=12)
+    plt.title("Experiment 1: Execution Time Analysis", fontweight='bold', fontsize=14)
     plt.grid(axis='y', linestyle='--', alpha=0.6)
+    plt.legend(loc='upper left', fontsize=11)
 
-    for bar, val in zip(bars, times):
+    # Add value labels on bars
+    for bar, val in zip(bars1, toueg_times):
         plt.text(
             bar.get_x() + bar.get_width() / 2,
             bar.get_height(),
-            f"{val:.3f} s",
+            f"{val:.3f}s",
             ha='center',
             va='bottom',
+            fontweight='bold',
+            fontsize=9
+        )
+    
+    for bar, val in zip(bars2, floyd_times):
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height(),
+            f"{val:.3f}s",
+            ha='center',
+            va='bottom',
+            fontweight='bold',
+            fontsize=9
         )
 
+    plt.tight_layout()
     plt.savefig("results/Performance_Time_BAR.png", dpi=300, bbox_inches='tight')
     plt.close()
+
 
 
 def plot_network_detailed(num_nodes=10):
