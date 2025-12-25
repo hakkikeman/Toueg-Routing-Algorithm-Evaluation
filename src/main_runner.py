@@ -14,7 +14,7 @@ from utils import visualizer
 
 # --- HELPER FUNCTIONS ---
 
-def inject_weights_to_nodes(sys, G):
+def inject_weights_to_nodes(sys: System, G: nx.Graph) -> None:
     """
     Injects real-world edge weights (distances) from NetworkX graph into the simulation nodes.
     This ensures the simulation operates on real kilometer data.
@@ -170,7 +170,10 @@ def run_simulation(AlgoClass, G, algo_name):
 
 # --- MAIN EXECUTION BLOCK ---
 if __name__ == "__main__":
-    
+    # Klasör yoksa oluştur, varsa geç
+    if not os.path.exists("results"):
+        os.makedirs("results")
+
     # Dictionary to store all results for the visualizer
     experiment_results = {
         "exp1_scale": {
