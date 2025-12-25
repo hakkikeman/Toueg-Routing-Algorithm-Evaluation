@@ -9,7 +9,7 @@
 
 ---
 
-## Abstract
+## 🌀 Abstract
 
 This project implements and evaluates two fundamental distributed graph algorithms for computing all-pairs shortest paths in network topologies:
 
@@ -26,7 +26,7 @@ This work is part of graduate-level research in **Distributed Algorithm Analysis
 
 ---
 
-## Key Features
+## 🔑 Key Features
 
 ### **Rigorous Algorithm Implementation**
 - **Line-by-line mapping** of Toueg's Algorithm 7.5 from Erciyes' "Distributed Graph Algorithms"
@@ -55,7 +55,7 @@ This work is part of graduate-level research in **Distributed Algorithm Analysis
 
 ---
 
-## Technical Architecture
+## 🏗 Technical Architecture
 
 ### Project Structure
 
