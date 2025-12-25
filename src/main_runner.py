@@ -254,7 +254,7 @@ if __name__ == "__main__":
     print(f"{'Bit Complexity':<25} | {t_bits:<20} | {f_bits:<20} | {bit_diff:+.1f}% (WIN)")
         
     # SAVE RESULTS TO JSON
-    json_filename = "simulation_results.json"
+    json_filename = "results/simulation_results.json"  # Yol güncellendi
     with open(json_filename, "w") as f:
         json.dump(experiment_results, f, indent=4)
     print(f"\n[SYSTEM] Results saved to {json_filename}")

@@ -7,6 +7,9 @@ import random
 import json
 import os
 
+if not os.path.exists('results'):
+    os.makedirs('results')
+
 # --- CONFIGURATION ---
 ROUTES_FILE = 'data/routes.csv'
 AIRPORTS_FILE = 'data/airports.csv'
@@ -179,7 +182,7 @@ def plot_connectivity_visuals(results):
                 horizontalalignment='center', verticalalignment='top', bbox=props)
 
     plt.subplots_adjust(bottom=0.2) 
-    filename = "Connectivity_Analysis_Dense_vs_Sparse.png"
+    filename = "results/Connectivity_Analysis_Dense_vs_Sparse.png"
     plt.savefig(filename, dpi=300, bbox_inches='tight')
     print(f"Saved: {filename}")
     plt.close()
@@ -231,7 +234,7 @@ def plot_comparison_chart_exp3(results):
 
     fig.legend(labels, loc='upper right', bbox_to_anchor=(0.95, 0.95), fontsize=12)
     plt.tight_layout(rect=[0, 0.03, 1, 0.90])
-    plt.savefig("Comparison_Toueg_vs_Floyd.png", dpi=300)
+    plt.savefig("results/Comparison_Toueg_vs_Floyd.png", dpi=300)
     plt.close()
 
 def plot_scale_charts_exp1(results):
@@ -271,7 +274,7 @@ def plot_scale_charts_exp1(results):
             va='bottom',
         )
 
-    plt.savefig("Performance_Complexity_Messages_BAR.png", dpi=300, bbox_inches='tight')
+    plt.savefig("results/Performance_Complexity_Messages_BAR.png", dpi=300, bbox_inches='tight')
     plt.close()
 
     # ===============================
@@ -295,7 +298,7 @@ def plot_scale_charts_exp1(results):
             va='bottom',
         )
 
-    plt.savefig("Performance_Time_BAR.png", dpi=300, bbox_inches='tight')
+    plt.savefig("results/Performance_Time_BAR.png", dpi=300, bbox_inches='tight')
     plt.close()
 
 
@@ -313,7 +316,7 @@ def plot_network_detailed(num_nodes=10):
     
     plt.title(f"Real World Flight Network Sample ({num_nodes} Nodes)\nEdge Weights = Distance (km)", fontsize=14)
     plt.axis('off')
-    plt.savefig(f"Network_Real_World_{num_nodes}_Nodes.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"results/Network_Real_World_{num_nodes}_Nodes.png", dpi=300, bbox_inches='tight')
     plt.close()
 
 def generate_all_visuals(json_file=DEFAULT_RESULTS_FILE):
