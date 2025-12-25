@@ -8,9 +8,9 @@ import json
 import os
 
 # --- CONFIGURATION ---
-ROUTES_FILE = 'routes.csv'
-AIRPORTS_FILE = 'airports.csv'
-DEFAULT_RESULTS_FILE = 'simulation_results.json'
+ROUTES_FILE = 'data/routes.csv'
+AIRPORTS_FILE = 'data/airports.csv'
+DEFAULT_RESULTS_FILE = 'results/simulation_results.json'
 
 # --- DATA LOADING ---
 

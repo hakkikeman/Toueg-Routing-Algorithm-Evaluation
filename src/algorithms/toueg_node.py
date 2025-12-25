@@ -1,4 +1,4 @@
-from distsim import Node
+from core.distsim import Node
 
 class TouegNode(Node):
     """

@@ -4,11 +4,13 @@ import random
 import time
 import json
 import os
-from distsim import System
-from data_loader import load_flight_graph
-from toueg_node import TouegNode
-from floyd_node import FloydNode
-import visualizer  # Import visualizer to trigger plotting automatically
+
+# Yeni Modüler Yapı Importları
+from core.distsim import System
+from utils.data_loader import load_flight_graph
+from algorithms.toueg_node import TouegNode
+from algorithms.floyd_node import FloydNode
+from utils import visualizer
 
 # --- HELPER FUNCTIONS ---
 

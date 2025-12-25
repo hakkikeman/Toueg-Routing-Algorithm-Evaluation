@@ -25,8 +25,7 @@ def haversine_distance(lat1, lon1, lat2, lon2):
         Distance in kilometers (integer).
 """
 
-def load_flight_graph(routes_file='routes.csv', airports_file='airports.csv', num_nodes=20):
-    """
+def load_flight_graph(routes_file='data/routes.csv', airports_file='data/airports.csv', num_nodes=20):    """
     Loads flight data from CSV files and constructs a NetworkX DiGraph.
     
     Args:
