@@ -199,23 +199,50 @@ Toueg-Routing-Algorithm-Evaluation/
 ## 🚀 Installation and Usage
 
 ### Prerequisites
-```bash
-Python 3.8+
-pip (Python package manager)
-```
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git
 
 ### Installation
 
 1. **Clone the repository**
+   ```bash
+   git clone https://github.com/hakkikeman/Toueg-Routing-Algorithm-Evaluation.git
+   cd Toueg-Routing-Algorithm-Evaluation
+   ```
+
+2. **Create a virtual environment** (recommended)
+   ```bash
+   # Windows
+   python -m venv venv
+   venv\Scripts\activate
+
+   # macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Running Tests (Optional)
+
+To run the comprehensive unit test suite:
+
 ```bash
-git clone https://github.com/hakkikeman/Toueg-Routing-Algorithm-Evaluation.git
-cd Toueg-Routing-Algorithm-Evaluation
+# Run all tests with coverage report
+pytest tests/ -v --cov=src --cov-report=term-missing
+
+# Run only unit tests
+pytest tests/ -v -m unit
+
+# Run only integration tests
+pytest tests/ -v -m integration
 ```
 
-2. **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
+**Note**: Integration tests require the OpenFlights dataset files in the `data/` directory.
 
 ### Running Experiments
 

@@ -1,11 +1,32 @@
 from core.distsim import Node
 
 class TouegNode(Node):
-    """
-    Implementation of Toueg's Algorithm (Algorithm 7.5).
-    Reference: Erciyes, Distributed Graph Algorithms, Algorithm 7.5
+    """Implementation of Toueg's distributed shortest path algorithm.
+    
+    This class implements Algorithm 7.5 from Erciyes' "Distributed Graph Algorithms".
+    The algorithm computes all-pairs shortest paths in a distributed manner using
+    a pivot-based approach with tree construction and distance vector propagation.
+    
+    Reference:
+        Erciyes, K. (2018). Distributed Graph Algorithms for Computer Networks.
+        Algorithm 7.5: Toueg's Algorithm.
+    
+    Attributes:
+        S_u (set): Set of processed pivot nodes (Line 2 of Algorithm 7.5).
+        D_u (dict): Distance vector mapping node IDs to shortest distances.
+        Nb_u (dict): Next-hop vector mapping node IDs to next hop on shortest path.
+        total_bits_sent (int): Cumulative bit complexity counter for analysis.
     """
     def __init__(self, id, env, msgManager):
+        """Initialize a Toueg algorithm node.
+        
+        Sets up the data structures required by Algorithm 7.5 (Lines 1-2).
+        
+        Args:
+            id (int): Unique identifier for this node.
+            env (simpy.Environment): SimPy simulation environment.
+            msgManager: Message manager for inter-node communication.
+        """
         Node.__init__(self, id, env, msgManager)
         
         # --- Algorithm 7.5 Data Structures (Lines 1-2) ---
@@ -18,13 +39,38 @@ class TouegNode(Node):
         self.total_bits_sent = 0
 
     def sendMessageTo(self, to, msgdict):
-        """Calculates Bit Complexity based on message size."""
+        """Send a message and track bit complexity.
+        
+        Overrides the parent sendMessageTo method to calculate and accumulate
+        the bit complexity based on message size.
+        
+        Args:
+            to (int): Destination node ID.
+            msgdict (dict): Message dictionary containing type and data.
+        
+        Note:
+            Bit complexity is estimated as 8 bits per character in the
+            string representation of the message dictionary.
+        """
         bits = len(str(msgdict)) * 8
         self.total_bits_sent += bits
         super().sendMessageTo(to, msgdict)
 
     def run(self):
-        """Main execution loop mapping Algorithm 7.5 logic."""
+        """Main execution loop implementing Algorithm 7.5 logic.
+        
+        This method is a SimPy process that implements the complete Toueg algorithm:
+        1. Initialization: Set up neighbor distances (Lines 3-10)
+        2. Pivot Selection: Process each pivot node (Lines 11-12)
+        3. Tree Construction: Build shortest path tree for pivot (Lines 13-22)
+        4. Distance Propagation: Distribute and update distance vectors (Lines 23-35)
+        
+        The algorithm processes n rounds (one per node as pivot) and computes
+        all-pairs shortest paths through distributed message passing.
+        
+        Yields:
+            simpy.Timeout: Simulation time delays for message processing.
+        """
         
         # --- Initialization (Lines 3-10) ---
         yield self.env.timeout(1)

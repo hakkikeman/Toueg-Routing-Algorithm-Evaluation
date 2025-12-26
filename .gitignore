@@ -2,6 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
 
 # Simülasyon çıktıları ve görseller
 # Not: Sonuçlar README içinde gösterileceği için ham verilerin depoyu kirletmesini engelliyoruz.
