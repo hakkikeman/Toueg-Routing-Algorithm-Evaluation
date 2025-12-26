@@ -5,7 +5,7 @@ import time
 import json
 import os
 
-# Yeni Modüler Yapı Importları
+# New Modular Structure Imports
 from core.distsim import System
 from utils.data_loader import load_flight_graph
 from algorithms.toueg_node import TouegNode
