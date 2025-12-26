@@ -322,7 +322,6 @@ make_graph_sparse(G, keep_prob=0.4)  # Change edge retention probability
 
 **Hakkı Keman**  
 M.Sc. in Computer Engineering - Ege University
-Distributed Algorithm Analysis and Design
 
 📧 Contact: kemangs2009@outlook.com         
 🔗 LinkedIn: www.linkedin.com/in/hakki-keman  
