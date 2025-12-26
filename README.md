@@ -9,7 +9,7 @@
 
 ---
 
-## 📋 Abstract
+## 🌀 Abstract
 
 This project implements and evaluates two fundamental distributed graph algorithms for computing all-pairs shortest paths in network topologies:
 
@@ -26,36 +26,36 @@ This work is part of graduate-level research in **Distributed Algorithm Analysis
 
 ---
 
-## ✨ Key Features
+## 🔑 Key Features
 
-### 🔬 **Rigorous Algorithm Implementation**
+### **Rigorous Algorithm Implementation**
 - **Line-by-line mapping** of Toueg's Algorithm 7.5 from Erciyes' "Distributed Graph Algorithms"
 - Faithful implementation of distributed Floyd-Warshall with relaxation-based flooding
 - Comprehensive inline documentation linking code to theoretical algorithm steps
 
-### 🌐 **Real-World Network Data**
+### **Real-World Network Data**
 - Integration with **OpenFlights** dataset (airports and routes)
 - Geographic distance calculation using Haversine formula
 - Support for both dense and sparse network topologies
 
-### ⚙️ **Discrete-Event Simulation Framework**
+### **Discrete-Event Simulation Framework**
 - Custom-built distributed system simulator using **SimPy**
 - Asynchronous message passing with mailbox-based communication
 - Accurate message and bit complexity tracking
 
-### 📊 **Comprehensive Experimental Suite**
+### **Comprehensive Experimental Suite**
 - **Experiment 1**: Scalability testing (10-50 nodes)
 - **Experiment 2**: Connectivity analysis (dense vs. sparse graphs)
 - **Experiment 3**: Complexity comparison (message count and bit transmission)
 
-### 📈 **Professional Visualization**
+### **Professional Visualization**
 - Automated generation of publication-quality charts
 - Network topology visualization with geographic coordinates
 - Comparative performance analysis graphs
 
 ---
 
-## 🏗️ Technical Architecture
+## 🏗 Technical Architecture
 
 ### Project Structure
 
@@ -308,7 +308,7 @@ make_graph_sparse(G, keep_prob=0.4)  # Change edge retention probability
 
 ---
 
-## 📖 References
+## References
 
 1. Erciyes, K. (2018). *Distributed Graph Algorithms for Computer Networks*. Springer.
 2. Lynch, N. A. (1996). *Distributed Algorithms*. Morgan Kaufmann.
@@ -318,11 +318,10 @@ make_graph_sparse(G, keep_prob=0.4)  # Change edge retention probability
 
 ---
 
-## 👤 Author
+## Author
 
 **Hakkı Keman**  
 M.Sc. in Computer Engineering - Ege University
-Distributed Algorithm Analysis and Design
 
 📧 Contact: kemangs2009@outlook.com         
 🔗 LinkedIn: www.linkedin.com/in/hakki-keman  
@@ -330,13 +329,13 @@ Distributed Algorithm Analysis and Design
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Course**: Distributed Algorithm Analysis and Design
 - **Dataset**: OpenFlights community for maintaining comprehensive flight network data
