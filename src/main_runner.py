@@ -172,7 +172,7 @@ def run_simulation(AlgoClass, G, algo_name):
 
 # --- MAIN EXECUTION BLOCK ---
 if __name__ == "__main__":
-    # Klasör yoksa oluştur, varsa geç
+    # Create results directory if it doesn't exist
     if not os.path.exists("results"):
         os.makedirs("results")
 
@@ -235,16 +235,16 @@ if __name__ == "__main__":
     print("\n>>> STARTING EXPERIMENT 3: COMPLEXITY COMPARISON (DENSE GRAPH) <<<")
     print("Scenario: High Connectivity Dense Graph (50 Nodes)")
     
-    # DENSE YAPMAK İÇİN DEĞİŞİKLİK BURADA:
-    # make_graph_sparse fonksiyonunu siliyoruz/kullanmıyoruz.
-    # Doğrudan 50 node'lu grafiği yüklüyoruz.
+    # MODIFICATION TO CREATE DENSE GRAPH:
+    # We don't use the make_graph_sparse function.
+    # Load the 50-node graph directly.
     G = load_flight_graph(num_nodes=50) 
     
     print(f"Graph Info: {len(G.nodes)} Nodes, {len(G.edges)} Edges")
     avg_deg = calculate_average_degree(G)
     print(f"Average Degree: {avg_deg:.2f}")
 
-    # Uyarı kısmını kaldırabilirsin çünkü dense graph fragmented olmaz
+    # Warning section can be removed since dense graphs don't fragment
     
     # 1. Run Toueg
     t_time, t_msg, t_bits = run_simulation(TouegNode, G, "Toueg (Algo 7.5)")
@@ -259,7 +259,7 @@ if __name__ == "__main__":
     print(f"{'METRIC':<25} | {'TOUEG':<20} | {'FLOYD':<20} | {'DIFFERENCE'}")
     print("="*85)
     
-    # Mesaj farkını da yazdıralım ki konsolda görebil
+    # Print message difference for console visibility
     msg_diff = ((f_msg - t_msg) / f_msg) * 100 if f_msg > 0 else 0
     bit_diff = ((f_bits - t_bits) / f_bits) * 100 if f_bits > 0 else 0
     
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     print(f"{'Bit Complexity':<25} | {t_bits:<20} | {f_bits:<20} | {bit_diff:+.1f}% (WIN)")
         
     # SAVE RESULTS TO JSON
-    json_filename = "results/simulation_results.json"  # Yol güncellendi
+    json_filename = "results/simulation_results.json"  # Path updated
     with open(json_filename, "w") as f:
         json.dump(experiment_results, f, indent=4)
     print(f"\n[SYSTEM] Results saved to {json_filename}")
