@@ -145,54 +145,75 @@ Toueg-Routing-Algorithm-Evaluation/
 ### Network Topology Visualization
 
 ![Real-World Network Topology](results/Network_Real_World_10_Nodes.png)
-*Figure 1: 10-node flight network extracted from OpenFlights dataset with geographic edge weights*
+*Figure 1: Real-world flight network topology with 10 major airports (AMS, LHR, FRA, CDG, ORD, JFK, LAX, ATL, DFW, PEK). Edge weights represent geographic distances in kilometers calculated using the Haversine formula. The network demonstrates a hub-and-spoke structure typical of airline routing systems.*
 
 ---
 
-### Performance Comparison: Toueg vs. Floyd-Warshall
-
-![Algorithm Comparison](results/Comparison_Toueg_vs_Floyd.png)
-*Figure 2: Comprehensive performance comparison across scalability, connectivity, and complexity dimensions*
-
-**Key Findings:**
-- **Toueg's Algorithm**: Demonstrates superior message efficiency through structured tree-based communication
-- **Floyd-Warshall**: Exhibits higher message overhead due to flooding-based propagation
-- **Accuracy**: Both algorithms achieve 100% correctness validation against NetworkX
-
----
-
-### Execution Time Analysis
+### Scalability Analysis: Execution Time
 
 ![Execution Time Comparison](results/Performance_Time_BAR.png)
-*Figure 3: Execution time comparison for 10-node network*
+*Figure 2: Execution time scaling across varying network sizes (10-50 nodes). The graph demonstrates near-linear time complexity growth, with execution time increasing from 0.007s for 10 nodes to 0.532s for 50 nodes.*
 
 **Observations:**
-- Toueg's algorithm shows competitive execution times despite additional tree construction overhead
-- Floyd-Warshall's flooding mechanism introduces processing delays due to message volume
+- **Exponential Growth**: Execution time increases significantly with network size, reflecting the O(n²) rounds required by Toueg's algorithm
+- **10 Nodes**: 0.007s - Minimal overhead for small networks
+- **50 Nodes**: 0.532s - Still practical for medium-sized networks
+- **Scalability**: The algorithm maintains reasonable performance even as network complexity increases
 
 ---
 
-### Message Complexity Analysis
+### Complexity Comparison: Toueg vs. Floyd-Warshall
+
+![Algorithm Comparison](results/Comparison_Toueg_vs_Floyd.png)
+*Figure 3: Head-to-head comparison of Toueg (Algorithm 7.5) and Distributed Floyd-Warshall (Algorithm 7.4) on a 50-node sparse graph. Three metrics are evaluated: execution time, message complexity, and bit complexity (data volume).*
+
+**Key Findings:**
+- **Execution Time**: Toueg (0.523s) significantly outperforms Floyd (3.371s) - **6.5x faster**
+- **Message Complexity**: Toueg (68,313 messages) vs Floyd (131,778 messages) - **48% reduction**
+- **Bit Complexity**: Toueg (34.9 Mb) vs Floyd (515.7 Mb) - **93% reduction in data volume**
+- **Winner**: Toueg's algorithm demonstrates superior efficiency across all three dimensions, validating its theoretical O(n² log n) advantage over Floyd's O(n³) complexity
+
+---
+
+### Message Explosion: Scalability Stress Test
 
 ![Message Complexity](results/Performance_Complexity_Messages_BAR.png)
-*Figure 4: Total message count comparison*
+*Figure 4: Total message count growth as network size increases from 10 to 50 nodes. This experiment demonstrates the message complexity scaling behavior of Toueg's algorithm under increasing network load.*
 
 **Analysis:**
-- **Toueg**: O(n²) message complexity through controlled pivot-based propagation
-- **Floyd-Warshall**: O(n³) message complexity due to unrestricted flooding
-- **Practical Impact**: Toueg achieves ~60% reduction in message count for 10-node network
+- **10 Nodes**: 949 messages - Minimal communication overhead
+- **20 Nodes**: 5,889 messages - **6.2x increase**
+- **30 Nodes**: 18,430 messages - **19.4x increase from baseline**
+- **40 Nodes**: 37,368 messages - **39.4x increase**
+- **50 Nodes**: 68,313 messages - **72x increase from 10-node baseline**
+- **Complexity Validation**: The super-linear growth confirms the theoretical O(n² log n) message complexity
+- **Practical Impact**: While message count grows rapidly, the algorithm remains feasible for networks up to 50 nodes
 
 ---
 
-### Connectivity Analysis: Dense vs. Sparse
+### Connectivity Analysis: Dense vs. Sparse Topologies
 
 ![Connectivity Analysis](results/Connectivity_Analysis_Dense_vs_Sparse.png)
-*Figure 5: Performance under varying connectivity conditions*
+*Figure 5: Comparative analysis of Toueg's algorithm performance on dense (Avg Degree: 17.2) versus sparse (Avg Degree: 6.4) 10-node networks. This experiment evaluates robustness under reduced connectivity conditions.*
 
-**Insights:**
-- Both algorithms maintain correctness in sparse topologies
-- Message count scales with network density
-- Toueg's structured approach provides consistent performance across connectivity levels
+**Scenario A - Dense Graph:**
+- **Average Degree**: 17.2 (highly connected)
+- **Execution Time**: 0.0069s
+- **Message Count**: 949 messages
+- **Validation Accuracy**: 100.0%
+- **Status**: ✅ High Cost, High Accuracy
+
+**Scenario B - Sparse Graph:**
+- **Average Degree**: 6.4 (60% edge reduction)
+- **Execution Time**: 0.0043s (**38% faster**)
+- **Message Count**: 474 messages (**50% reduction**)
+- **Validation Accuracy**: 11.1% ⚠️
+- **Status**: ⚠️ Low Cost, Low Accuracy
+
+**Critical Insights:**
+- **Performance Trade-off**: Sparse graphs reduce computational cost but sacrifice correctness
+- **Accuracy Degradation**: The 11.1% accuracy in sparse topology indicates the algorithm requires sufficient connectivity to converge correctly
+- **Practical Implication**: Toueg's algorithm is best suited for well-connected networks; sparse topologies may require alternative approaches or connectivity augmentation
 
 ---
 
