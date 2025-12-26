@@ -13,8 +13,6 @@ htmlcov/
 
 # Simülasyon çıktıları ve görseller
 # Not: Sonuçlar README içinde gösterileceği için ham verilerin depoyu kirletmesini engelliyoruz.
-results/
-
 simulation_results.json
 
 # Sanal ortam (Virtual Environment) klasörleri
